@@ -23,7 +23,7 @@ PointSprite* PointSprite::getInstance() {
 }
 
 PointSprite::PointSprite() { // @suppress("Class members should be properly initialized")
-	OpenGLContext::createContex(POINT_SPRITE, 600, 400, NULL, true, false, true);
+	OpenGLContext::createContext(POINT_SPRITE, 600, 400, NULL, true, false, true);
 	OpenGLContext::makecurrent(POINT_SPRITE);
 
 	ShaderMap::createProgram(POINT_SPRITE, "resources/shaders/PointSprite_vertx.glsl", "resources/shaders/PointSprite_frag.glsl");
@@ -163,7 +163,7 @@ void PointSprite::display() {
 	ShaderMap::useProgram(0);
 
 	OpenGLContext::swapBuffers();
-	OpenGLContext::releaseContex();
+	OpenGLContext::releaseContext();
 }
 
 void PointSprite::animation()  {

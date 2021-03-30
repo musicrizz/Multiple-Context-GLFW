@@ -71,7 +71,7 @@ Text::Text() { // @suppress("Class members should be properly initialized")
 	//---------------------------------------------
 	//---------------------------------------------
 
-	OpenGLContext::createContex(TEXT_RENDER, 900, 400, NULL, true, false, true);
+	OpenGLContext::createContext(TEXT_RENDER, 900, 400, NULL, true, false, true);
 	OpenGLContext::makecurrent(TEXT_RENDER);
 
 	OpenGLContext::setReshape([](GLFWwindow* window, int width, int height){
@@ -185,7 +185,7 @@ Text::Text() { // @suppress("Class members should be properly initialized")
 	glfwSwapInterval(1);
 
 	ShaderMap::useProgram(0);
-	OpenGLContext::releaseContex();
+	OpenGLContext::releaseContext();
 
 	initCharModelLine();
 
@@ -216,7 +216,7 @@ void Text::display(double deltaTime) {
 	ShaderMap::useProgram(0);
 
 	OpenGLContext::swapBuffers();
-	OpenGLContext::releaseContex();
+	OpenGLContext::releaseContext();
 
 }
 

@@ -53,7 +53,7 @@ CameraTexture::CameraTexture() { // @suppress("Class members should be properly 
 
 	// CREATE OPENGL CONTEXT
 
-	OpenGLContext::createContex(TEXTURE_CAM, 900, 700, NULL, true, false, true);
+	OpenGLContext::createContext(TEXTURE_CAM, 900, 700, NULL, true, false, true);
 	//OpenGLContext::setReshape(TEXTURE_CAM, reshape);
 	//OpenGLContext::setKeyboard(TEXTURE_CAM,keyboard);
 	//OpenGLContext::setUserPointer(this);
@@ -193,7 +193,7 @@ CameraTexture::CameraTexture() { // @suppress("Class members should be properly 
 	 glfwSwapInterval(1);
 
  	ShaderMap::useProgram(0);
-	OpenGLContext::releaseContex();
+	OpenGLContext::releaseContext();
 
 	thread_cam = std::thread(&CameraTexture::camCapture, this);
 
@@ -276,7 +276,7 @@ void CameraTexture::display(double deltaTime)  {
 
 	OpenGLContext::swapBuffers();
 
-	OpenGLContext::releaseContex();
+	OpenGLContext::releaseContext();
 }
 
 

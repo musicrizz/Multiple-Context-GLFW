@@ -60,11 +60,11 @@ public:
 
 	virtual ~OpenGLContext();
 
-	static void createContex(std::string name, unsigned int width, unsigned int height, GLFWmonitor* monitor = NULL,
+	static void createContext(std::string name, unsigned int width, unsigned int height, GLFWmonitor* monitor = NULL,
 										bool visible = true, bool decorated = true, bool trasparentFrameBuffer = false);
 
 	static void makecurrent(std::string name);
-	static void releaseContex();
+	static void releaseContext();
 
 	static GLFWwindow* getCurrent();
 	static GLFWwindow* getContext(std::string name);

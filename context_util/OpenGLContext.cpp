@@ -25,7 +25,7 @@ OpenGLContext::OpenGLContext() {
 	current_context = "";
 }
 
-void OpenGLContext::createContex(std::string name, unsigned int width, unsigned int height, GLFWmonitor *monitor, bool visible, bool decorated, bool trasparentFrameBuffer) {
+void OpenGLContext::createContext(std::string name, unsigned int width, unsigned int height, GLFWmonitor *monitor, bool visible, bool decorated, bool trasparentFrameBuffer) {
 
 	if(name.size() == 0) return;
 
@@ -78,7 +78,7 @@ void OpenGLContext::makecurrent(std::string name) {
 	} catch (const std::out_of_range &oor) {}
 }
 
-void OpenGLContext::releaseContex() {
+void OpenGLContext::releaseContext() {
 	glfwMakeContextCurrent(NULL);
 }
 
@@ -104,7 +104,7 @@ void OpenGLContext::destroy()   {
 	glfwDestroyWindow(getCurrent());
 	context_map.erase(current_context);
 	current_context = "";
-	releaseContex();
+	releaseContext();
 }
 
 void OpenGLContext::destroy(std::string name)   {

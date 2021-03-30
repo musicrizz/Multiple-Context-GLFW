@@ -14,7 +14,7 @@ SimpleTriangle* SimpleTriangle::instance = nullptr;
 SimpleTriangle::SimpleTriangle() {
 	if(OpenGLContext::getContext(SIMPLE_TRIANGLE) != nullptr) return;
 
-	OpenGLContext::createContex(SIMPLE_TRIANGLE, 300, 300, NULL, true, false, true);
+	OpenGLContext::createContext(SIMPLE_TRIANGLE, 300, 300, NULL, true, false, true);
 
 	OpenGLContext::makecurrent(SIMPLE_TRIANGLE);
 
@@ -67,7 +67,7 @@ SimpleTriangle::SimpleTriangle() {
 	glfwSwapInterval(1);
 
 	ShaderMap::useProgram(0);
-	OpenGLContext::releaseContex();
+	OpenGLContext::releaseContext();
 
 }
 
@@ -93,7 +93,7 @@ void SimpleTriangle::display()  {
 	ShaderMap::useProgram(0);
 
 	OpenGLContext::swapBuffers();
-	OpenGLContext::releaseContex();
+	OpenGLContext::releaseContext();
 }
 
 

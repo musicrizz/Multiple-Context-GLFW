@@ -11,34 +11,39 @@
  */
 
 #include "TempoMap.h"
+#include <chrono>
+#include <algorithm>
 
-std::unordered_map<std::string, Tempo*> TempoMap::map;
+std::unordered_map<std::string, Tempo*> TempoMap::tempo_map;
+std::unordered_map<std::string, Timer*> TempoMap::timer_map;
+std::thread TempoMap::_thread_timers;
+std::mutex TempoMap::_mtx;
+std::condition_variable TempoMap::_cond_var;
+
+bool TempoMap::init_flag = false;
 
 TempoMap::TempoMap() {
 }
 
+
 TempoMap::~TempoMap() {
-	for(auto t : map)  {
-		if(t.second)delete(t.second);
-	}
-	map.clear();
 }
 
-
+//-----TEMPO ----
 void TempoMap::create(std::string name)  {
-	map.insert(std::pair<std::string, Tempo*>(name, new Tempo()));
+	tempo_map.insert(std::pair<std::string, Tempo*>(name, new Tempo()));
 }
 
 /*
  * if @name does not exist , a new Tempo is created associated with @name
  */
 inline Tempo* TempoMap::get(std::string name) {
-	std::unordered_map<std::string, Tempo*>::const_iterator it = map.find(name);
-	if (it != map.end()) {
+	std::unordered_map<std::string, Tempo*>::const_iterator it = tempo_map.find(name);
+	if (it != tempo_map.end()) {
 		return it->second;
 	}else{
 		Tempo* tmp = new Tempo();
-		map.insert(std::pair<std::string, Tempo*>(name, tmp));
+		tempo_map.insert(std::pair<std::string, Tempo*>(name, tmp));
 		return tmp;
 	}
 }
@@ -72,12 +77,87 @@ double TempoMap::getElapsedMillToSec(std::string name) {
 }
 
 void TempoMap::erase(std::string name) {
-	std::unordered_map<std::string, Tempo*>::const_iterator it = map.find(name);
-	if (it != map.end()) {
+	std::unordered_map<std::string, Tempo*>::const_iterator it = tempo_map.find(name);
+	if (it != tempo_map.end()) {
 		if(it->second)delete it->second;
-		map.erase(it);
+		tempo_map.erase(it);
 	}
 }
+
+//-------------------------------------
+//--- TIMER ---
+
+void TempoMap::init()  {
+	_thread_timers = std::thread(&TempoMap::routine);
+	_thread_timers.detach();
+	init_flag = true;
+}
+
+void TempoMap::routine()  {
+	while(true){
+		std::unique_lock<std::mutex> lk(_mtx, std::defer_lock);
+
+		if (lk.try_lock()) {
+			_cond_var.wait(lk, [&] {return !timer_map.empty();});
+
+			std::for_each(timer_map.begin(), timer_map.end(), [](std::pair<std::string, Timer*> elm){
+
+				if(elm.second->isStarted() && elm.second->checkElapsed() && !elm.second->checkTimeOut())  {
+					//TO DO - implementing Thread pool
+					((void (*)())elm.second->getFun())();
+				}
+
+			});
+			lk.unlock();
+		}
+
+		std::this_thread::sleep_for(std::chrono::microseconds(100));
+	}
+}
+
+void TempoMap::createTimer(std::string name, void (*pf)(), long long int interval, long long int timeout, bool started) {
+	std::lock_guard<std::mutex> lk(_mtx);
+	if(timer_map.insert(std::pair<std::string, Timer*>(name, new Timer(pf,interval,timeout,started))).second) {
+		if(!init_flag){ init();}
+		_cond_var.notify_one();
+	}
+}
+
+inline Timer* TempoMap::findTimer(std::string name)  {
+	std::unordered_map<std::string, Timer*>::const_iterator it = timer_map.find(name);
+	if (it != timer_map.end()) {
+		return it->second;
+	}
+	return nullptr;
+}
+
+bool TempoMap::startTimer(std::string name) {
+	std::lock_guard<std::mutex> lk(_mtx);
+	Timer* t = findTimer(name);
+	if(t) {
+		t->start();
+		return true;
+	}
+	return false;
+}
+
+bool TempoMap::stopTimer(std::string name)  {
+	std::lock_guard<std::mutex> lk(_mtx);
+	Timer* t = findTimer(name);
+	if(t) {
+		t->stop();
+		return true;
+	}
+	return false;
+}
+
+bool TempoMap::deleteTimer(std::string name) {
+	std::lock_guard<std::mutex> lk(_mtx);
+	return timer_map.erase(name);
+}
+
+
+
 
 
 
