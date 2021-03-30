@@ -16,8 +16,10 @@
 
 std::unordered_map<std::string, Tempo*> TempoMap::tempo_map;
 std::unordered_map<std::string, Timer*> TempoMap::timer_map;
+
 std::thread TempoMap::_thread_timers;
-std::mutex TempoMap::_mtx;
+std::mutex TempoMap::_mutex_timers;
+std::mutex TempoMap::_mutex_tempo;
 std::condition_variable TempoMap::_cond_var;
 
 bool TempoMap::init_flag = false;
@@ -31,6 +33,7 @@ TempoMap::~TempoMap() {
 
 //-----TEMPO ----
 void TempoMap::create(std::string name)  {
+	std::lock_guard<std::mutex> lk(_mutex_tempo);
 	tempo_map.insert(std::pair<std::string, Tempo*>(name, new Tempo()));
 }
 
@@ -38,6 +41,7 @@ void TempoMap::create(std::string name)  {
  * if @name does not exist , a new Tempo is created associated with @name
  */
 inline Tempo* TempoMap::get(std::string name) {
+	std::lock_guard<std::mutex> lk(_mutex_tempo);
 	std::unordered_map<std::string, Tempo*>::const_iterator it = tempo_map.find(name);
 	if (it != tempo_map.end()) {
 		return it->second;
@@ -77,6 +81,7 @@ double TempoMap::getElapsedMillToSec(std::string name) {
 }
 
 void TempoMap::erase(std::string name) {
+	std::lock_guard<std::mutex> lk(_mutex_tempo);
 	std::unordered_map<std::string, Tempo*>::const_iterator it = tempo_map.find(name);
 	if (it != tempo_map.end()) {
 		if(it->second)delete it->second;
@@ -95,7 +100,7 @@ void TempoMap::init()  {
 
 void TempoMap::routine()  {
 	while(true){
-		std::unique_lock<std::mutex> lk(_mtx, std::defer_lock);
+		std::unique_lock<std::mutex> lk(_mutex_timers, std::defer_lock);
 
 		if (lk.try_lock()) {
 			_cond_var.wait(lk, [&] {return !timer_map.empty();});
@@ -116,7 +121,7 @@ void TempoMap::routine()  {
 }
 
 void TempoMap::createTimer(std::string name, void (*pf)(), long long int interval, long long int timeout, bool started) {
-	std::lock_guard<std::mutex> lk(_mtx);
+	std::lock_guard<std::mutex> lk(_mutex_timers);
 	if(timer_map.insert(std::pair<std::string, Timer*>(name, new Timer(pf,interval,timeout,started))).second) {
 		if(!init_flag){ init();}
 		_cond_var.notify_one();
@@ -132,7 +137,7 @@ inline Timer* TempoMap::findTimer(std::string name)  {
 }
 
 bool TempoMap::startTimer(std::string name) {
-	std::lock_guard<std::mutex> lk(_mtx);
+	std::lock_guard<std::mutex> lk(_mutex_timers);
 	Timer* t = findTimer(name);
 	if(t) {
 		t->start();
@@ -142,7 +147,7 @@ bool TempoMap::startTimer(std::string name) {
 }
 
 bool TempoMap::stopTimer(std::string name)  {
-	std::lock_guard<std::mutex> lk(_mtx);
+	std::lock_guard<std::mutex> lk(_mutex_timers);
 	Timer* t = findTimer(name);
 	if(t) {
 		t->stop();
@@ -152,7 +157,7 @@ bool TempoMap::stopTimer(std::string name)  {
 }
 
 bool TempoMap::deleteTimer(std::string name) {
-	std::lock_guard<std::mutex> lk(_mtx);
+	std::lock_guard<std::mutex> lk(_mutex_timers);
 	return timer_map.erase(name);
 }
 
