@@ -155,8 +155,8 @@ Text::Text() { // @suppress("Class members should be properly initialized")
 	glSamplerParameteri(sampler, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glSamplerParameteri(sampler, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glBindTexture(GL_TEXTURE_2D, textures[T_TEXT]);
-	glBindSampler(1, sampler);
-	glUniform1i(ShaderMap::getUniformLocation("char_texture"), 1);
+	glBindSampler(T_TEXT, sampler);
+	glUniform1i(ShaderMap::getUniformLocation("char_texture"), T_TEXT);
 
 	loc_color = ShaderMap::getUniformLocation("color");
 	loc_mtx_model = ShaderMap::getUniformLocation("mtx_model");
@@ -253,13 +253,14 @@ void Text::render(Character* C) {
 		*v   = glm::vec2(0.0f,  float(C->getH()));
 	glUnmapBuffer(GL_ARRAY_BUFFER);
 
+	//******NOTE : this is very inefficent way , very slow, but I was curious ;) !
+	//
 	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, buffers[B_PIXEL_UNPAK]);
 	//glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, textures[T_TEXT]);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RED,C->getW(), C->getH(),0, GL_RED, GL_UNSIGNED_BYTE,
-								reinterpret_cast<void*>(C->getTextureOffset()));
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RED,C->getW(), C->getH(),0, GL_RED, GL_UNSIGNED_BYTE, reinterpret_cast<void*>(C->getTextureOffset()));
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);
 	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
 
 	glDrawArrays(GL_TRIANGLE_FAN, 0, 4);

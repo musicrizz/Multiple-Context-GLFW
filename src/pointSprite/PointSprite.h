@@ -8,7 +8,7 @@
 #ifndef POINTSPRITE_H_
 #define POINTSPRITE_H_
 
-#include "../Constants.h"
+#include "../IDs.h"
 #include "../../context_util/util.h"
 
 class PointSprite {
@@ -31,6 +31,7 @@ private:
 	GLenum internalFormat, format;
 	short current_frame, num_frames;
 	int frame_w, frame_h, frame_size, frames_interval;
+	const char* TEMPO_ANIMATION_SPRITE = "Tempo animation point sprite";
 
 
 	void animation();

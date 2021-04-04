@@ -9,7 +9,6 @@
 #include "../context_util/util.h"
 #include "../lib/logger/easylogging++.h"
 #include "../lib/image/stb_image.h"
-#include "Constants.h"
 #include "simpleTriangle/SimpleTriangle.h"
 #include "cameraTexture/CameraTexture.h"
 #include "pointSprite/PointSprite.h"
@@ -61,6 +60,11 @@ int main(int argc, char **argv) {
 #if DEVELOPEMENT
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
 #endif
+
+	//** TEMPO IDs
+	//const char *DEBUG_TIME = "debug_time";
+	const char *FPS_MAX = "fps";
+	const char *DELTA_TIME = "delta_time";
 
 	SimpleTriangle* simpleTriangle = SimpleTriangle::getInstance();
 	PointSprite* pointSprite = PointSprite::getInstance();

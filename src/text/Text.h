@@ -8,12 +8,13 @@
 #ifndef TEXT_TEXT_H_
 #define TEXT_TEXT_H_
 
-#include "../Constants.h"
 #include <unordered_map>
 #include <vector>
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
+
+#include "../IDs.h"
 
 #include "Character.h"
 #include "CharModel.h"

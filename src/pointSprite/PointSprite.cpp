@@ -28,6 +28,7 @@ PointSprite::PointSprite() { // @suppress("Class members should be properly init
 
 	ShaderMap::createProgram(POINT_SPRITE, "resources/shaders/PointSprite_vertx.glsl", "resources/shaders/PointSprite_frag.glsl");
 
+	//useless, the window is not decorated
 	/*OpenGLContext::setReshape(POINT_SPRITE, [](GLFWwindow* window, int width, int height){
 		PointSprite* p = (PointSprite*) glfwGetWindowUserPointer(window);
 		if (p) {
@@ -90,7 +91,7 @@ PointSprite::PointSprite() { // @suppress("Class members should be properly init
 	current_frame = 7;
 	num_frames = 7;
 	frames_interval = 50;//milliseconsd
-	TempoMap::create(TIMER_ANIMATION_SPRITE);
+	TempoMap::create(TEMPO_ANIMATION_SPRITE);
 
 	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, buffers[B_PIXEL_UNPAK]);
 	glBindTexture(GL_TEXTURE_2D, textures[T_SPRITE]);
@@ -167,14 +168,14 @@ void PointSprite::display() {
 }
 
 void PointSprite::animation()  {
-	if(TempoMap::getElapsedMill(TIMER_ANIMATION_SPRITE) >= frames_interval) {
+	if(TempoMap::getElapsedMill(TEMPO_ANIMATION_SPRITE) >= frames_interval) {
 		if(--current_frame < 0) current_frame = num_frames;
 		glBindBuffer(GL_PIXEL_UNPACK_BUFFER, buffers[B_PIXEL_UNPAK]);
 			glBindTexture(GL_TEXTURE_2D, textures[T_SPRITE]);
 			glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, frame_w, frame_h, format, GL_UNSIGNED_BYTE, reinterpret_cast<void*>(frame_size*current_frame));
 		glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
 
-		TempoMap::updateStart(TIMER_ANIMATION_SPRITE);
+		TempoMap::updateStart(TEMPO_ANIMATION_SPRITE);
 	}
 
 }

@@ -8,8 +8,8 @@
 #ifndef SIMPLETRIANGLE_H_
 #define SIMPLETRIANGLE_H_
 
-#include "../Constants.h"
 #include "../../context_util/util.h"
+#include "../IDs.h"
 
 class SimpleTriangle {
 private:
