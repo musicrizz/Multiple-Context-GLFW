@@ -11,10 +11,16 @@
  */
 
 #include "Program.h"
+Program::Program()  {
+	this->name = "";
+	this->ID = -1;
+	this->_binding_point = -1;
+}
 
 Program::Program(std::string name, const char *vertexPath, const char *fragmentPath) {
 	this->name = name;
 	this->ID = 0;
+	this->_binding_point = -1;
 
 	std::string vertex_src, fragment_src;
 
@@ -78,6 +84,16 @@ Program::~Program() {}
 Program::Program(const Program &other) {
 	this->ID = other.ID;
 	this->name = other.name;
+	this->_binding_point = other._binding_point;
+}
+
+Program& Program::operator=(const Program &other) {
+	if (this != &other) {
+		this->ID = other.ID;
+		this->name = other.name;
+		this->_binding_point = other._binding_point;
+	}
+	return *this;
 }
 
 unsigned int Program::getID() {
@@ -117,3 +133,23 @@ bool Program::checkLinkedProgram(unsigned int pId) {
 	}
 	return true;
 }
+
+void Program::setBindingPoint(unsigned int p)   {
+	this->_binding_point = p;
+}
+
+unsigned int Program::getBindingPoint()  {
+	return this->_binding_point;
+}
+
+
+
+
+
+
+
+
+
+
+
+

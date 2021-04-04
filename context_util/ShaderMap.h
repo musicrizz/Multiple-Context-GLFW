@@ -21,8 +21,8 @@
 
 class ShaderMap {
 private:
-	static unsigned int current;
-	static std::unordered_map<std::string, unsigned int> map;
+	static Program current;
+	static std::unordered_map<std::string, Program> map;
 
 	ShaderMap();
 	ShaderMap(const ShaderMap &other) = delete;
@@ -38,9 +38,11 @@ public:
 	void static useProgram(std::string name);
 	void static program_null();//set glUseProgram to 0;
 
-	unsigned int static getProgram(std::string name);
+	Program static getProgram(std::string name);
+	unsigned int  static getProgramID(std::string name);
 
-	unsigned int static getCurrentProgram();
+	Program static getCurrentProgram();
+	unsigned int static getCurrentProgramID();
 
 	int static getCountPrograms();
 
