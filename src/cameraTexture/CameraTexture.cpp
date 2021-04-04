@@ -157,12 +157,12 @@ CameraTexture::CameraTexture() { // @suppress("Class members should be properly 
 	 glActiveTexture(GL_TEXTURE1);
 	 glUniform1i(ShaderMap::getUniformLocation("camera_image"), T_CAM);
 	 	 glBindTexture(GL_TEXTURE_2D, textures[T_CAM]);
-	 	 glBindSampler(1, sampler);
+	 	 glBindSampler(T_CAM, sampler);
 
 	 glActiveTexture(GL_TEXTURE2);
 	 glUniform1i(ShaderMap::getUniformLocation("canny_image"), T_CANNY);
 	 	 glBindTexture(GL_TEXTURE_2D, textures[T_CANNY]);
-	 	 glBindSampler(2, sampler);
+	 	 glBindSampler(T_CANNY, sampler);
 
 	 glActiveTexture(GL_TEXTURE0);
 	 glBindTexture(GL_TEXTURE_2D, T_NULL);
