@@ -21,8 +21,8 @@
 
 class ShaderMap {
 private:
-	static Program current;
-	static std::unordered_map<std::string, Program> map;
+	static Program* current;
+	static std::unordered_map<std::string, Program*> map;
 
 	ShaderMap();
 	ShaderMap(const ShaderMap &other) = delete;
@@ -33,29 +33,29 @@ public:
 
 	virtual ~ShaderMap();
 
-	bool static createProgram(std::string name, const char* vertexPath, const char* fragmentPath);
+	static bool createProgram(std::string name, const char* vertexPath, const char* fragmentPath);
 
-	void static useProgram(std::string name);
-	void static program_null();//set glUseProgram to 0;
+	static void useProgram(std::string name);
+	static void program_null();//set glUseProgram to 0;
 
-	Program static getProgram(std::string name);
-	unsigned int  static getProgramID(std::string name);
+	static Program* getProgram(std::string name);
+	static unsigned int getProgramID(std::string name);
 
-	Program static getCurrentProgram();
-	unsigned int static getCurrentProgramID();
+	static Program* getCurrentProgram();
+	static unsigned int getCurrentProgramID();
 
-	int static getCountPrograms();
+	static int getCountPrograms();
 
-	int static getUniformLocation(std::string program, std::string var_name);
-	int static getUniformLocation(std::string var_name);
+	static int getUniformLocation(std::string program, std::string var_name);
+	static int getUniformLocation(std::string var_name);
 
-	int static getUniformBlockIndex(std::string program, std::string var_name);
-	int static getUniformBlockIndex(std::string var_name);
+	static int getUniformBlockIndex(std::string program, std::string var_name);
+	static int getUniformBlockIndex(std::string var_name);
 
-	void static bindingUniformBlocks(std::string var_name, unsigned int biding_point);
+	static void bindingUniformBlocks(std::string var_name, unsigned int biding_point);
 
-	int static getAttributeLocation(std::string program, std::string var_name);
-	int static getAttributeLocation(std::string var_name);
+	static int getAttributeLocation(std::string program, std::string var_name);
+	static int getAttributeLocation(std::string var_name);
 
 };
 
