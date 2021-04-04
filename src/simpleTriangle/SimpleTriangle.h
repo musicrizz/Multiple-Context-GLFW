@@ -28,6 +28,8 @@ private:
 
 	SimpleTriangle();
 
+	void rotate();
+
 	SimpleTriangle(const SimpleTriangle &other)=delete;
 	SimpleTriangle(SimpleTriangle &&other)=delete;
 	SimpleTriangle& operator=(const SimpleTriangle &other)=delete;

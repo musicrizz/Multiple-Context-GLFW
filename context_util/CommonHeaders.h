@@ -37,7 +37,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 //Set to 1 to enable OpenGl Debug Message
-#define DEVELOPEMENT 0
+#define DEVELOPEMENT 1
 
 
 #endif /* COMMONHEADERS_H_ */

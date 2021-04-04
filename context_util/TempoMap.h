@@ -19,6 +19,7 @@
 #include <thread>
 #include <mutex>
 #include <condition_variable>
+#include <atomic>
 
 #include "Tempo.h"
 #include "Timer.h"
@@ -37,6 +38,7 @@ private:
 	static std::mutex _mutex_timers;
 	static std::condition_variable _cond_var;
 
+
 	static bool init_flag;
 
 	TempoMap();
@@ -48,7 +50,6 @@ private:
 	static void init();
 	static void routine();
 	static Timer* findTimer(std::string);
-
 
 public:
 

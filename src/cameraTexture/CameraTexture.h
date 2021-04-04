@@ -27,7 +27,7 @@ private:
 
 	cv::Mat cam_buffer, canny_buffer;
 	cv::Mat cam_buffer_tmp;
-	bool dataReady;
+	bool dataReady; // better atomic
 
 	static CameraTexture* instance;
 

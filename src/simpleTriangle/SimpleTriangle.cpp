@@ -66,7 +66,7 @@ SimpleTriangle::SimpleTriangle() {
 	OpenGLContext::setUserPointer(this);
 	glfwSwapInterval(1);
 
-	ShaderMap::useProgram(0);
+	ShaderMap::program_null();
 	OpenGLContext::releaseContext();
 
 }
@@ -74,6 +74,19 @@ SimpleTriangle::SimpleTriangle() {
 SimpleTriangle* SimpleTriangle::getInstance()   {
 	std::call_once(instance_flag, []()-> SimpleTriangle* {return instance = new SimpleTriangle();});
 	return instance;
+}
+
+void SimpleTriangle::rotate()  {
+	if(TempoMap::getElapsedMill("rotate_triangle_tempo") >= 1000)  {
+		glBindBuffer(GL_ARRAY_BUFFER, buffers[B_VERTEX]);
+		glm::vec4 *v = (glm::vec4*) glMapBufferRange(GL_ARRAY_BUFFER, 0, sizeof(glm::vec4) * 3, GL_MAP_WRITE_BIT);
+		for(short i = 0; i < 3; i++)  {
+			*v++ = *v * glm::rotate(glm::radians(45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		}
+		glUnmapBuffer(GL_ARRAY_BUFFER);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		TempoMap::updateStart("rotate_triangle_tempo");
+	}
 }
 
 void SimpleTriangle::display()  {
@@ -84,13 +97,15 @@ void SimpleTriangle::display()  {
 
 	ShaderMap::useProgram(SIMPLE_TRIANGLE);
 
+	rotate();
+
 	glBindVertexArray(vaos[V]);
 
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 
 	glBindVertexArray(0);
 
-	ShaderMap::useProgram(0);
+	ShaderMap::program_null();
 
 	OpenGLContext::swapBuffers();
 	OpenGLContext::releaseContext();

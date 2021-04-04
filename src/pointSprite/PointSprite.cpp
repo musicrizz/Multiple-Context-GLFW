@@ -119,7 +119,7 @@ PointSprite::PointSprite() { // @suppress("Class members should be properly init
 	aspect = float(h)/float(w);
 	glUniform2iv(ShaderMap::getUniformLocation("viewport"), 1, glm::value_ptr(glm::ivec2(w,h)));
 
-	ShaderMap::useProgram(0);
+	ShaderMap::program_null();
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
@@ -141,7 +141,7 @@ PointSprite::PointSprite() { // @suppress("Class members should be properly init
 	OpenGLContext::setUserPointer(this);
 	glfwSwapInterval(1);
 
-	//ShaderMap::useProgram(0);
+	//ShaderMap::program_null();
 	//OpenGLContext::releaseContex();
 }
 
@@ -160,7 +160,7 @@ void PointSprite::display() {
 
 	glBindVertexArray(0);
 
-	ShaderMap::useProgram(0);
+	ShaderMap::program_null();
 
 	OpenGLContext::swapBuffers();
 	OpenGLContext::releaseContext();

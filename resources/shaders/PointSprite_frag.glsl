@@ -34,6 +34,8 @@ void main() {
         float uv_x = gl_PointCoord.x * size.x;
         float uv_y = gl_PointCoord.y * size.y;
 
+        //***************
+        //this part is no my code, but I don't remember the original author ..
         float sum = 0.0;
         for (int n = 0; n < 9; ++n) {
             uv_y = (gl_PointCoord.y * size.y) + (glow_size * float(n - 4.5));

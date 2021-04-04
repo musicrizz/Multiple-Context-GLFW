@@ -36,7 +36,7 @@ public:
 	bool static createProgram(std::string name, const char* vertexPath, const char* fragmentPath);
 
 	void static useProgram(std::string name);
-	void static useProgram(int p);
+	void static program_null();//set glUseProgram to 0;
 
 	unsigned int static getProgram(std::string name);
 

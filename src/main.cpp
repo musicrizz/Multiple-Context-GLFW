@@ -72,6 +72,11 @@ int main(int argc, char **argv) {
 	OpenGLContext::setWindowPosition(TEXTURE_CAM, 510, 50);
 	OpenGLContext::setWindowPosition(TEXT_RENDER, 510, 750);
 
+	TempoMap::createTimer("MOVE_WINDOW_", []()->void{
+		float fac = float(TempoMap::getElapsedMill("Tween"))/15000.f * 1320.f;
+		OpenGLContext::setWindowPosition(POINT_SPRITE,int(std::min(1320.0f, fac)),880);
+	}, 300, 15000);
+
 	int frames = 0;
 	int fps_time = 5;
 	double delta = .0f;
@@ -82,6 +87,8 @@ int main(int argc, char **argv) {
 
 			TempoMap::updateStart(DELTA_TIME);
 
+			//SWAPPING CONTEXT
+
 			simpleTriangle->display();
 
 			pointSprite->display();
@@ -90,7 +97,7 @@ int main(int argc, char **argv) {
 
 			textRender->display(delta);
 
-			/*Make Current the contex you want to capture callbacks events
+			/*Now Make Current the contex you want to capture callbacks events
 			 * like keyboard, mouse ecc...
 			 */
 			OpenGLContext::makecurrent(TEXT_RENDER);
@@ -102,22 +109,16 @@ int main(int argc, char **argv) {
 			delta = TempoMap::getElapsedMillToSec(DELTA_TIME);
 		}
 
-		glfwPollEvents(); //  It MUST be in the main thread
+		glfwPollEvents(); //It MUST be in the main thread
 
-		if (TempoMap::getElapsedSeconds("MoveSpriteWindow") >= 1) {
-			float fac = float(TempoMap::getElapsedMill("Tween"))/15000.f * 1320.f;
-			OpenGLContext::setWindowPosition(POINT_SPRITE,
-					int(std::min(1320.0f, fac)) ,
-					880);
-		}
 
 //		if (TempoMap::getElapsedSeconds(DEBUG_TIME) >= 1) {
-//			LOG(INFO) << "Frame per second : " << frames<< ", fps_time :"<<fps_time <<" , Delta time : "<<delta;
+//			LOG(DEBUG) << "Frame per second : " << frames<< ", fps_time :"<<fps_time <<" , Delta time : "<<delta;
 //			frames = 0;
 //			TempoMap::updateStart(DEBUG_TIME);
 //		}
 
-		this_thread::sleep_for(chrono::milliseconds(1));
+		this_thread::sleep_for(chrono::microseconds(500));
 	}
 	cameraTexture->stop();
 	cameraTexture->join();

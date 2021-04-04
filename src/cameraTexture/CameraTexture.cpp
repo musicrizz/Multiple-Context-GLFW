@@ -192,7 +192,7 @@ CameraTexture::CameraTexture() { // @suppress("Class members should be properly 
 
 	 glfwSwapInterval(1);
 
- 	ShaderMap::useProgram(0);
+ 	ShaderMap::program_null();
 	OpenGLContext::releaseContext();
 
 	thread_cam = std::thread(&CameraTexture::camCapture, this);
@@ -272,7 +272,7 @@ void CameraTexture::display(double deltaTime)  {
 
 	glBindVertexArray(0);
 
-	ShaderMap::useProgram(0);
+	ShaderMap::program_null();
 
 	OpenGLContext::swapBuffers();
 

@@ -165,7 +165,7 @@ Text::Text() { // @suppress("Class members should be properly initialized")
 	//glUniformMatrix4fv(loc_mtx_projection, 1, GL_FALSE, glm::value_ptr(glm::ortho(0.f, 400.f, 0.f, 400.f, -1.0f, 10.0f)));
 	flag_projection = true;
 
-	ShaderMap::useProgram(0);
+	ShaderMap::program_null();
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
@@ -184,7 +184,7 @@ Text::Text() { // @suppress("Class members should be properly initialized")
 	OpenGLContext::setUserPointer(this);
 	glfwSwapInterval(1);
 
-	ShaderMap::useProgram(0);
+	ShaderMap::program_null();
 	OpenGLContext::releaseContext();
 
 	initCharModelLine();
@@ -213,7 +213,7 @@ void Text::display(double deltaTime) {
 
 	updateCharModelLine();
 
-	ShaderMap::useProgram(0);
+	ShaderMap::program_null();
 
 	OpenGLContext::swapBuffers();
 	OpenGLContext::releaseContext();

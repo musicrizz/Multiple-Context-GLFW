@@ -33,8 +33,8 @@ bool ShaderMap::createProgram(std::string name, const char *vertexPath, const ch
 			return true;
 		}
 	} catch (ShaderException &e) {
-		fprintf(stderr,"Create Program %s ShaderException: \n %s \n", name.c_str(), e.what());
-		// throw
+		//fprintf(stderr,"Create Program %s ShaderException: \n %s \n", name.c_str(), e.what());
+		throw e;
 	}
 
 	return false;
@@ -62,8 +62,8 @@ unsigned int ShaderMap::getProgram(std::string name)  {
 	return 0;*/
 }
 
-void ShaderMap::useProgram(int p)  {
-	glUseProgram(p);
+void ShaderMap::program_null()  {
+	glUseProgram(0);
 }
 
 unsigned int ShaderMap::getCurrentProgram()  {
