@@ -208,10 +208,8 @@ void CameraTexture::join()    {
 }
 
 void CameraTexture::camCapture() {
-	int c = 0;
 	while (!stop_capture) {
 		cam_capture >> cam_buffer_tmp;
-		c++;
 		//if (cam_buffer.empty())continue;
 		std::lock_guard<std::mutex> lk (mutex_cam_buffer);
 		cam_buffer_tmp.copyTo(cam_buffer);

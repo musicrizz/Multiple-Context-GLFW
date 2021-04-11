@@ -23,11 +23,11 @@ private:
 
 	std::thread thread_cam;
 	std::mutex mutex_cam_buffer;
+	std::atomic<bool>  dataReady = false;
 	bool stop_capture;
 
 	cv::Mat cam_buffer, canny_buffer;
 	cv::Mat cam_buffer_tmp;
-	bool dataReady; // better atomic
 
 	static CameraTexture* instance;
 
