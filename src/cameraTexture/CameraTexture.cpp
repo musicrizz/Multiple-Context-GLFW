@@ -216,7 +216,7 @@ void CameraTexture::camCapture() {
 		if(animation->getStatus() > 0) {
 			cv::cvtColor(cam_buffer_tmp, cam_buffer_tmp, cv::COLOR_BGR2GRAY);
 			cv::GaussianBlur(cam_buffer_tmp, cam_buffer_tmp,cv::Size(5, 5),0);
-			cv::Canny(cam_buffer_tmp, canny_buffer, 5, 25);
+			cv::Canny(cam_buffer_tmp, canny_buffer, 10, 50);
 		}
 		dataReady = true;
 	}

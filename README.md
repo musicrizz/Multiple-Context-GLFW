@@ -1,5 +1,5 @@
 # Multiple-Contex-GLFW-example
-Example using my utility MyContex to create Multiple contex with glfw3.  
+Example using my utility MyContex to create Multiple OpenGL contex with glfw3.  
 In this application I create 4 context with undecorated window and trasparent framebuffer.
 
 * Context 1 : Simple Trinagle
@@ -9,3 +9,4 @@ In this application I create 4 context with undecorated window and trasparent fr
 
 *if you press space bar the Context 4 will be full screen.*
 
+<img src="readme_res/Screen_context.png" alt="screen" width="400"/>

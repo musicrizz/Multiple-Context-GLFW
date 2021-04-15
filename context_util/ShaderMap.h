@@ -34,6 +34,7 @@ public:
 	virtual ~ShaderMap();
 
 	static bool createProgram(std::string name, const char* vertexPath, const char* fragmentPath);
+	static bool deleteProgram(std::string name);
 
 	static void useProgram(std::string name);
 	static void program_null();//set glUseProgram to 0;
@@ -53,6 +54,7 @@ public:
 	static int getUniformBlockIndex(std::string var_name);
 
 	static void bindingUniformBlocks(std::string var_name, unsigned int biding_point);
+	static void bindingUniformBlocksForSingleProgram(std::string pname, std::string var_name, unsigned int biding_point);
 
 	static int getAttributeLocation(std::string program, std::string var_name);
 	static int getAttributeLocation(std::string var_name);
