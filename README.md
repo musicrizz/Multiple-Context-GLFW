@@ -19,3 +19,4 @@ Required lib :
 * glfw
 * glm
 * OpenCV
+* freeType
