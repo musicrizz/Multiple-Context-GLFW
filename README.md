@@ -10,4 +10,12 @@ In this application I create 4 context with undecorated window and trasparent fr
 *if you press space bar the Context 4 will be full screen.*
 
 <img src="readme_res/Screen_context.png" alt="screen" width="400"/>
-<img src="readme_res/screen.gif" alt="screen" width="400"/>
+<img src="readme_res/screen.gif" alt="screen" width="400"/>   
+
+This is a cpp project with Eclipse.  
+Required lib :   
+* GL
+* GLEW
+* glfw
+* glm
+* OpenCV
