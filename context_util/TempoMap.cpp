@@ -109,7 +109,8 @@ void TempoMap::routine()  {
 
 				if(elm.second->isStarted() && elm.second->checkElapsed() && !elm.second->checkTimeOut())  {
 					//TO DO - implementing Thread pool
-					((void (*)())elm.second->getFun())();
+					//((void (*)())elm.second->getFun())();
+					elm.second->getFun()();
 				}
 
 			});
@@ -120,7 +121,7 @@ void TempoMap::routine()  {
 	}
 }
 
-void TempoMap::createTimer(std::string name, void (*pf)(), long long int interval, long long int timeout, bool started) {
+void TempoMap::createTimer(std::string name, std::function<void()> pf, long long int interval, long long int timeout, bool started) {
 	std::lock_guard<std::mutex> lk(_mutex_timers);
 	if(timer_map.insert(std::pair<std::string, Timer*>(name, new Timer(pf,interval,timeout,started))).second) {
 		if(!init_flag){ init();}

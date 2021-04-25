@@ -82,7 +82,7 @@ public:
 	//Createand manage Timer
 
 	static void createTimer(std::string name,
-			void (*pf)(), long long int interval, long long int timeout = -1, bool started = true);
+			std::function<void()>, long long int interval, long long int timeout = -1, bool started = true);
 
 	static bool deleteTimer(std::string name);
 

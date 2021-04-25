@@ -14,13 +14,15 @@
 #define TIMER_H_
 
 #include "Tempo.h"
+#include <functional>
 
 class Timer {
 
 private:
 
 	//puntatore a funzione da eseguire a timer
-	void (*pf)();
+	//void (*pf)();
+	std::function<void()> pf;
 
 	//
 	long long int _interval;//milliseconds
@@ -41,7 +43,7 @@ private:
 
 public:
 
-	Timer(void (*function)(), long long int interval, long long int timeout = -1, bool started = true) :
+	Timer(std::function<void()> function, long long int interval, long long int timeout = -1, bool started = true) :
 			pf(function), _interval(abs(interval)), _timeout(timeout), _started(started) {
 		timeout <= 0 ? _infinite = true : _infinite = false;
 		started ? _tempo = new Tempo() : _tempo = nullptr;
@@ -65,8 +67,8 @@ public:
 		_timeout_counter = other._timeout_counter;
 	}
 
-	void* getFun() {
-		return (void*)pf;
+	std::function<void()> getFun() {
+		return pf;
 	}
 
 	bool isStarted()  {
